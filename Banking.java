@@ -9,7 +9,7 @@ public class Banking {
         int id = scan.nextInt();
         scan.nextLine();
 
-        BankingApplication account = new BankingApplication(id, name, birthday);
+        BankingApplication account = new BankingApplication(id, name);
         account.showMenu();
     }
 }
