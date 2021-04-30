@@ -1,5 +1,7 @@
 import java.util.*;
 
+import javax.lang.model.util.ElementScanner14;
+
 public class BankingApplication {
 
     private String name;
@@ -23,9 +25,6 @@ public class BankingApplication {
     public double getBalance(){
         return balance;
     }
-    public double getPreviousTransaction(){
-        return transaction;
-    }
 
     public void setName(String newName){
         name = newName;
@@ -38,12 +37,24 @@ public class BankingApplication {
     }
     public void makeDeposit(double deposit){
         balance = balance + deposit;
-        transaction = deposit;
+        transaction = +deposit;
     }
     public void makeWithdrawal(double withdrawal){
         balance = balance - withdrawal;
-        transaction = withdrawal;
+        transaction = -withdrawal;
     }
+    public void getPreviousTransaction(){
+        if (transaction > 0){
+            System.out.println("Deposit: $" + transaction);
+        }
+        else if (transaction < 0){
+            System.out.println("Withdrawal: $" + Math.abs(transaction));
+        }
+        else{
+            System.out.println("Invalid transaction.");
+        }
+    }
+
     public void showMenu(){
         Scanner scan = new Scanner(System.in);
         System.out.println("---------------------------");
@@ -56,9 +67,10 @@ public class BankingApplication {
         System.out.println("6. Exit Account");
         System.out.println("---------------------------");
 
+        String answer = "";
         do{
             System.out.println("Would you like to do?");
-            String answer = scan.nextLine();
+            answer = scan.nextLine();
             switch (answer){
                 //get balance
                 case "1":
@@ -69,6 +81,7 @@ public class BankingApplication {
                     System.out.println("Enter deposit amount: ");
                     double depositAmount = scan.nextDouble();
                     makeDeposit(depositAmount);
+                    scan.nextLine();
                     break;
                 //make a withdrawal
                 case "3":
@@ -79,11 +92,14 @@ public class BankingApplication {
                     break;
                 //show previous transaction
                 case "4":
-                    System.out.println("Your previous transaction was: $" + getPreviousTransaction());
+                    getPreviousTransaction();
                     break;
                 //return to menu
                 case "5":
                     showMenu();
+                    break;
+                //exit application
+                case "6":
                     break;
                 //for invalid input
                 default:
@@ -91,7 +107,7 @@ public class BankingApplication {
                     break;
             }
         }
-        while(answer != "6");
+        while(!answer.equals("6"));
         System.out.println("Goodbye.");
     }
 }
